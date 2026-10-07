@@ -245,7 +245,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
       // 缺失的构建资源必须返回 404。若退回 index.html，浏览器会把 HTML
       // 当作 JavaScript/CSS 加载并得到一片白屏。
       if (request.url.startsWith("/assets/")) {
-        return reply.code(404).send({ error: { code: "ASSET_NOT_FOUND", message: "页面资源不存在，请重新启动木子工作台" } });
+        return reply.code(404).send({ error: { code: "ASSET_NOT_FOUND", message: "页面资源不存在，请重新启动Onebachelor Bar" } });
       }
       return reply.header("Cache-Control", "no-cache").sendFile("index.html");
     });

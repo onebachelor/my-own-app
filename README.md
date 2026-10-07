@@ -1,6 +1,6 @@
 # My Own App
 
-My Own App 是木子工作台的开源项目：一款只在自己电脑上运行的工作与生活管理应用。它把计划、创作、开发、咨询、健身、饮食和娱乐放进同一个本地控制中心，不需要注册账号，也不依赖云数据库。
+My Own App 是Onebachelor Bar的开源项目：一款只在自己电脑上运行的工作与生活管理应用。它把计划、创作、开发、咨询、健身、饮食和娱乐放进同一个本地控制中心，不需要注册账号，也不依赖云数据库。
 
 应用默认只监听本机地址 `127.0.0.1`。业务数据保存在独立的 SQLite 文件中，刷新页面、关闭浏览器或重新启动电脑后都不会丢失。
 
@@ -30,22 +30,22 @@ My Own App 是木子工作台的开源项目：一款只在自己电脑上运行
 
 ### 流光玻璃
 
-![木子工作台流光玻璃界面](docs/screenshots/liquid-glass.png)
+![Onebachelor Bar流光玻璃界面](docs/screenshots/liquid-glass.png)
 
 ### Notion 笔记
 
-![木子工作台 Notion 笔记界面](docs/screenshots/notion-notebook.png)
+![Onebachelor Bar Notion 笔记界面](docs/screenshots/notion-notebook.png)
 
 ### Neo-Brutalism
 
-![木子工作台 Neo-Brutalism 界面](docs/screenshots/neo-brutalism.png)
+![Onebachelor Bar Neo-Brutalism 界面](docs/screenshots/neo-brutalism.png)
 
 ## 支持的电脑系统
 
 | 系统 | 启动文件 | 默认数据目录 | 打开目录命令 |
 | --- | --- | --- | --- |
-| macOS | `启动木子工作台.command` | `~/Library/Application Support/MuziWorkspace/` | 系统 `open` |
-| Windows 10/11 | `启动木子工作台.bat` | `%LOCALAPPDATA%\MuziWorkspace\` | `explorer.exe` |
+| macOS | `启动Onebachelor Bar.command` | `~/Library/Application Support/MuziWorkspace/` | 系统 `open` |
+| Windows 10/11 | `启动Onebachelor Bar.bat` | `%LOCALAPPDATA%\MuziWorkspace\` | `explorer.exe` |
 
 项目使用同一套 React、Fastify 和 SQLite 代码运行在两个系统上。启动器、数据路径、浏览器打开方式和目录打开方式都按当前系统自动选择。仓库的持续集成会分别在 GitHub 提供的 macOS 与 Windows 环境运行构建、数据库、启动器和生产服务测试。
 
@@ -81,25 +81,25 @@ cd my-own-app
 npm install
 ```
 
-只有安装依赖时需要联网。安装完成后，木子工作台的日常运行、保存、备份和恢复都不需要联网。
+只有安装依赖时需要联网。安装完成后，Onebachelor Bar的日常运行、保存、备份和恢复都不需要联网。
 
 ## 日常启动
 
 ### macOS
 
-双击项目根目录中的 `启动木子工作台.command`。
+双击项目根目录中的 `启动Onebachelor Bar.command`。
 
 如果系统提示文件没有执行权限，在项目目录运行一次：
 
 ```bash
-chmod +x "启动木子工作台.command"
+chmod +x "启动Onebachelor Bar.command"
 ```
 
 如果 macOS 阻止首次打开，可以在 Finder 中右键该文件，选择“打开”，确认后再次运行。
 
 ### Windows
 
-双击项目根目录中的 `启动木子工作台.bat`。
+双击项目根目录中的 `启动Onebachelor Bar.bat`。
 
 批处理文件会自动进入它所在的项目目录，因此项目路径中包含中文或空格也可以正常启动。如果 Windows 阻止从网络下载的脚本，可在文件属性中选择“解除锁定”，确认文件来自本仓库后再运行。
 
@@ -107,7 +107,7 @@ chmod +x "启动木子工作台.command"
 
 启动器会执行以下操作：
 
-1. 检查 `127.0.0.1:4317` 上是否已有当前版本的木子工作台。
+1. 检查 `127.0.0.1:4317` 上是否已有当前版本的Onebachelor Bar。
 2. 首次运行时生成本地生产构建。
 3. 已经运行时复用原服务，不会重复启动多个进程。
 4. 构建版本变化时先保存 SQLite，再安全替换旧服务。

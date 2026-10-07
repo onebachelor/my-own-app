@@ -113,7 +113,7 @@ describe("application shell", () => {
     const fetchMock = mockApi();
     renderApp();
     await userEvent.click(await screen.findByRole("button", { name: "保存并退出" }));
-    expect(await screen.findByText("数据已保存，木子工作台已安全退出")).toBeInTheDocument();
+    expect(await screen.findByText("数据已保存，Onebachelor Bar已安全退出")).toBeInTheDocument();
     const calls = fetchMock.mock.calls.map(([input]) => String(input));
     expect(calls).toContain("/api/system/save");
     expect(calls).toContain("/api/system/save-and-exit");
