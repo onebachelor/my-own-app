@@ -480,9 +480,9 @@
 :root[data-appearance="notebook"] .app-shell[data-module="media"] .page-header-sticker         { background-position: 100% 0; }
 :root[data-appearance="notebook"] .app-shell[data-module="development"] .page-header-sticker   { background-position: 0 50%; }
 :root[data-appearance="notebook"] .app-shell[data-module="consulting"] .page-header-sticker    { background-position: 50% 50%; }
-:root[data-appearance="notebook"] .app-shell[data-module="fitness"] .page-header-sticker       { background-position: 100% 50%; }
 :root[data-appearance="notebook"] .app-shell[data-module="diet"] .page-header-sticker          { background-position: 0 100%; }
-:root[data-appearance="notebook"] .app-shell[data-module="entertainment"] .page-header-sticker { background-position: 50% 100%; }
+:root[data-appearance="notebook"] .app-shell[data-module="calendar"] .page-header-sticker      { background-position: 50% 100%; }
+:root[data-appearance="notebook"] .app-shell[data-module="learning"] .page-header-sticker      { background-position: 100% 50%; }
 :root[data-appearance="notebook"] .app-shell[data-module="settings"] .page-header-sticker      { background-position: 100% 100%; }
 
 :root[data-appearance="notebook"] .page-header h1 {

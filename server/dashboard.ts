@@ -36,19 +36,13 @@ export function buildDashboard(store: AppStore, date: string): Record<string, an
       .filter((item) => item.followup_at?.slice(0, 10) <= date && item.status !== "done")
       .map((item) => ({ ...item, attention_type: "followup", module: "consulting", title: item.content })),
   );
-  attention.push(
-    ...store
-      .list("workouts")
-      .filter((item) => item.workout_date === date && item.status !== "completed")
-      .map((item) => ({ ...item, attention_type: "workout", module: "fitness", title: item.name })),
-  );
 
   const media = store.list("mediaContents");
   const devItems = store.list("devWorkItems");
   const followups = store.list("consultingFollowups");
-  const workouts = store.list("workouts");
   const meals = store.list("meals");
-  const entertainment = store.list("entertainmentItems");
+  const calendarEvents = store.list("calendarEvents");
+  const learningPlans = store.list("learningPlans");
 
   return {
     date,
@@ -65,9 +59,9 @@ export function buildDashboard(store: AppStore, date: string): Record<string, an
       media: media.filter((item) => ["producing", "ready"].includes(item.stage)).slice(0, 3),
       development: devItems.filter((item) => item.priority === "high" && item.status !== "done").slice(0, 3),
       consulting: followups.filter((item) => item.status !== "done").slice(0, 3),
-      fitness: workouts.filter((item) => item.workout_date >= date).slice(0, 3),
       diet: meals.filter((item) => item.meal_date === date).slice(0, 4),
-      entertainment: entertainment.filter((item) => item.status === "playing").slice(0, 3),
+      calendar: calendarEvents.filter((item) => item.event_date === date).slice(0, 4),
+      learning: learningPlans.filter((item) => item.status !== "done").slice(0, 3),
     },
   };
 }

@@ -22,13 +22,13 @@ describe("search, trash and settings", () => {
     await create("mediaContents", { title: "晨星内容", stage: "idea" });
     await create("devProjects", { name: "晨星开发项目" });
     await create("consultingProjects", { client_id: client.id, name: "晨星咨询项目" });
-    await create("workoutTemplates", { name: "晨星训练" });
+    await create("calendarEvents", { title: "晨星日历待办", event_date: "2026-08-02" });
     await create("foods", { name: "晨星早餐" });
-    await create("entertainmentItems", { name: "晨星游戏" });
+    await create("learningSubjects", { name: "晨星学习" });
     const response = await app.inject({ method: "GET", url: "/api/search?q=%E6%99%A8%E6%98%9F" });
     expect(response.statusCode).toBe(200);
     const modules = new Set(response.json().data.map((item: any) => item.module));
-    expect(modules).toEqual(new Set(["today", "media", "development", "consulting", "fitness", "diet", "entertainment"]));
+    expect(modules).toEqual(new Set(["today", "media", "development", "consulting", "diet", "calendar", "learning"]));
   });
 
   it("moves a record to trash, restores it, and requires a separate permanent-delete operation", async () => {
@@ -51,12 +51,12 @@ describe("search, trash and settings", () => {
   });
 
   it("persists theme, appearance and calendar preferences across a restart", async () => {
-    const saved = await app.inject({ method: "PUT", url: "/api/settings", payload: { theme: "dark", appearance: "neo", weekStart: "sunday", dateFormat: "iso", dashboardModules: ["media", "fitness"] } });
+    const saved = await app.inject({ method: "PUT", url: "/api/settings", payload: { theme: "dark", appearance: "neo", weekStart: "sunday", dateFormat: "iso", dashboardModules: ["media", "calendar"] } });
     expect(saved.json().data).toMatchObject({ theme: "dark", appearance: "neo", weekStart: "sunday", dateFormat: "iso" });
     await app.close();
     app = await buildApp({ dataDir: directory, autoBackup: false });
     const loaded = await app.inject({ method: "GET", url: "/api/settings" });
-    expect(loaded.json().data).toMatchObject({ theme: "dark", appearance: "neo", weekStart: "sunday", dateFormat: "iso", dashboardModules: ["media", "fitness"] });
+    expect(loaded.json().data).toMatchObject({ theme: "dark", appearance: "neo", weekStart: "sunday", dateFormat: "iso", dashboardModules: ["media", "calendar"] });
   });
 
   it("cascades child records when a deleted aggregate is permanently removed", async () => {

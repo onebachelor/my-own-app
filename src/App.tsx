@@ -8,9 +8,9 @@ const TodayPage = lazy(() => import("./pages/TodayPage").then((module) => ({ def
 const MediaPage = lazy(() => import("./pages/MediaPage").then((module) => ({ default: module.MediaPage })));
 const DevelopmentPage = lazy(() => import("./pages/DevelopmentPage").then((module) => ({ default: module.DevelopmentPage })));
 const ConsultingPage = lazy(() => import("./pages/ConsultingPage").then((module) => ({ default: module.ConsultingPage })));
-const FitnessPage = lazy(() => import("./pages/FitnessPage").then((module) => ({ default: module.FitnessPage })));
 const DietPage = lazy(() => import("./pages/DietPage").then((module) => ({ default: module.DietPage })));
-const EntertainmentPage = lazy(() => import("./pages/EntertainmentPage").then((module) => ({ default: module.EntertainmentPage })));
+const CalendarPage = lazy(() => import("./pages/CalendarPage").then((module) => ({ default: module.CalendarPage })));
+const LearningPage = lazy(() => import("./pages/LearningPage").then((module) => ({ default: module.LearningPage })));
 const SettingsPage = lazy(() => import("./pages/SettingsPage").then((module) => ({ default: module.SettingsPage })));
 
 function LazyPage({ children }: { children: ReactNode }) {
@@ -28,9 +28,9 @@ const router = createBrowserRouter([
       { path: "media", element: <LazyPage><MediaPage /></LazyPage> },
       { path: "development", element: <LazyPage><DevelopmentPage /></LazyPage> },
       { path: "consulting", element: <LazyPage><ConsultingPage /></LazyPage> },
-      { path: "fitness", element: <LazyPage><FitnessPage /></LazyPage> },
       { path: "diet", element: <LazyPage><DietPage /></LazyPage> },
-      { path: "entertainment", element: <LazyPage><EntertainmentPage /></LazyPage> },
+      { path: "calendar", element: <LazyPage><CalendarPage /></LazyPage> },
+      { path: "learning", element: <LazyPage><LearningPage /></LazyPage> },
       { path: "settings", element: <LazyPage><SettingsPage /></LazyPage> },
     ],
   },

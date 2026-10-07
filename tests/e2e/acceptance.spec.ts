@@ -46,7 +46,7 @@ test("closing the browser page leaves the local service available for reuse", as
 test("keeps the Liquid Glass shell readable at both target desktop sizes", async ({ page }) => {
   for (const viewport of [{ width: 1440, height: 900 }, { width: 1728, height: 1117 }]) {
     await page.setViewportSize(viewport);
-    for (const path of ["/", "/media", "/fitness", "/diet", "/settings"]) {
+    for (const path of ["/", "/media", "/calendar", "/diet", "/settings"]) {
       await page.goto(path);
       await expect(page.locator(".sidebar")).toBeVisible();
       await expect(page.locator(".topbar")).toBeVisible();
@@ -169,7 +169,7 @@ test("uses a distinct local AI-generated icon for every module in one consistent
 
 test("keeps Neo isolated, multicolor and overflow-free across all pages and target viewports", async ({ page, request }) => {
   test.setTimeout(120_000);
-  const pages = ["/", "/today", "/media", "/development", "/consulting", "/fitness", "/diet", "/entertainment", "/settings"];
+  const pages = ["/", "/today", "/media", "/development", "/consulting", "/diet", "/calendar", "/learning", "/settings"];
   const viewports = [
     { width: 1440, height: 900 },
     { width: 1728, height: 1117 },
@@ -253,9 +253,9 @@ test("keeps every module's primary business entry and safe-exit control availabl
     ["/media", "记录内容"],
     ["/development", "新建项目"],
     ["/consulting", "添加客户"],
-    ["/fitness", "新建训练模板"],
+    ["/calendar", "添加待办"],
     ["/diet", "记录餐食"],
-    ["/entertainment", "添加游戏或活动"],
+    ["/learning", "添加科目"],
     ["/settings", "立即备份"],
   ] as const;
 
@@ -278,7 +278,8 @@ test("keeps major panels separated and grid columns aligned in all three appeara
   await page.emulateMedia({ reducedMotion: "reduce" });
   const spacingClient = await create(request, "clients", { name: "布局间距验收客户" });
   await create(request, "consultingProjects", { client_id: spacingClient.id, name: "布局间距验收项目", status: "active" });
-  await create(request, "entertainmentItems", { name: "布局间距验收游戏", platform: "本地", status: "playing" });
+  await create(request, "calendarEvents", { title: "布局间距验收待办", event_date: "2026-08-02", status: "todo" });
+  await create(request, "learningSubjects", { name: "布局间距验收科目", status: "active" });
 
   const readGridFlow = async (selector: string) => page.locator(selector).evaluate((grid) => {
     const rect = grid.getBoundingClientRect();
@@ -302,11 +303,9 @@ test("keeps major panels separated and grid columns aligned in all three appeara
       expect(settings.after).toBeGreaterThanOrEqual(12);
       expect(Math.abs(settings.firstRowTopDelta)).toBeLessThanOrEqual(1);
 
-      await page.goto("/fitness");
-      const fitness = await readGridFlow(".fitness-grid");
-      expect(fitness.before).toBeGreaterThanOrEqual(12);
-      expect(fitness.after).toBeGreaterThanOrEqual(12);
-      expect(Math.abs(fitness.firstRowTopDelta)).toBeLessThanOrEqual(1);
+      await page.goto("/learning");
+      const split = await readGridFlow(".workspace-split");
+      expect(Math.abs(split.firstRowTopDelta)).toBeLessThanOrEqual(1);
 
       await page.goto("/diet");
       const nutrition = await readGridFlow(".nutrition-strip");
@@ -314,9 +313,9 @@ test("keeps major panels separated and grid columns aligned in all three appeara
       expect(nutrition.before).toBeGreaterThanOrEqual(12);
       expect(meals.after).toBeGreaterThanOrEqual(12);
 
-      await page.goto("/entertainment");
-      const games = await readGridFlow(".game-grid");
-      expect(games.after).toBeGreaterThanOrEqual(12);
+      await page.goto("/calendar");
+      await expect(page.locator(".month-calendar")).toBeVisible();
+      await expect(page.locator(".calendar-selected-detail")).toBeVisible();
 
       await page.goto("/consulting");
       const consulting = await readGridFlow(".consult-grid");
@@ -474,20 +473,20 @@ test("deletes a consulting client through a confirmed trash action", async ({ pa
   await expect(page.locator(".trash-list article").filter({ hasText: "待删除咨询客户" })).toBeVisible();
 });
 
-test("shows workout and meal details in monthly calendars", async ({ page, request }) => {
-  const template = await create(request, "workoutTemplates", { name: "日历力量训练", body_part: "上肢", weekday: 7 });
-  const workout = await create(request, "workouts", { template_id: template.id, name: "周日训练", body_part: "上肢", workout_date: "2026-08-02", status: "completed" });
-  const exercise = await create(request, "workoutExercises", { workout_id: workout.id, name: "卧推", sort_order: 0 });
-  await create(request, "workoutSets", { workout_exercise_id: exercise.id, set_number: 1, reps: 8, weight: 50, completed: 1 });
-  await create(request, "workoutSets", { workout_exercise_id: exercise.id, set_number: 2, reps: 8, weight: 50, completed: 1 });
+test("shows calendar events and meal details in monthly calendars", async ({ page, request }) => {
+  const today = await page.evaluate(() => {
+    const d = new Date();
+    const offset = d.getTimezoneOffset();
+    return new Date(d.getTime() - offset * 60_000).toISOString().slice(0, 10);
+  });
+  await create(request, "calendarEvents", { title: "日历验收评审", event_date: today, start_time: "09:00", end_time: "10:30", description: "里程碑评审", status: "todo" });
   const meal = await create(request, "meals", { meal_date: "2026-08-02", meal_type: "dinner", name: "日历验收晚餐", entry_kind: "actual" });
   await create(request, "mealItems", { meal_id: meal.id, food_name: "鸡肉饭", quantity: 1, calories: 420, protein: 32 });
 
-  await page.goto("/fitness");
-  const workoutDay = page.locator('.month-calendar-day[data-date="2026-08-02"]');
-  await expect(page.getByRole("heading", { name: "训练日历" })).toBeVisible();
-  await expect(workoutDay).toContainText("上肢");
-  await expect(workoutDay).toContainText("卧推 16次");
+  await page.goto("/calendar");
+  const eventDay = page.locator(`.month-calendar-day[data-date="${today}"]`);
+  await expect(page.getByRole("heading", { name: "日历" })).toBeVisible();
+  await expect(eventDay).toContainText("日历验收评审");
 
   await page.goto("/diet");
   const mealDay = page.locator('.month-calendar-day[data-date="2026-08-02"]');
@@ -505,13 +504,18 @@ test("renders distinct records in every specialized module", async ({ page, requ
   const client = await create(request, "clients", { name: "验收咨询客户" });
   const consult = await create(request, "consultingProjects", { client_id: client.id, name: "验收咨询项目", status: "active" });
   await create(request, "consultingDeliverables", { project_id: consult.id, name: "验收交付物", due_date: "2026-08-10", status: "todo" });
-  const template = await create(request, "workoutTemplates", { name: "验收力量训练", weekday: 2 });
-  await create(request, "workoutTemplateExercises", { template_id: template.id, name: "验收深蹲", target_sets: 3, target_reps: 5, target_weight: 60 });
+  const today = await page.evaluate(() => {
+    const d = new Date();
+    const offset = d.getTimezoneOffset();
+    return new Date(d.getTime() - offset * 60_000).toISOString().slice(0, 10);
+  });
+  await create(request, "calendarEvents", { title: "验收日历待办", event_date: today, status: "todo" });
   const meal = await create(request, "meals", { meal_date: "2026-08-02", meal_type: "dinner", name: "验收晚餐", entry_kind: "actual" });
   await create(request, "mealItems", { meal_id: meal.id, food_name: "验收食物", quantity: 1, calories: 420, protein: 31 });
-  await create(request, "entertainmentItems", { name: "验收游戏", platform: "Steam", status: "playing", next_goal: "完成第一章" });
+  const subject = await create(request, "learningSubjects", { name: "验收科目", status: "active" });
+  await create(request, "learningPlans", { subject_id: subject.id, title: "验收学习计划", content: "阶段一", plan_date: today, status: "todo", progress: 0 });
 
-  for (const [path, text] of [["/development", "验收 Bug"], ["/consulting", "验收交付物"], ["/fitness", "验收深蹲"], ["/diet", "验收晚餐"], ["/entertainment", "验收游戏"]]) {
+  for (const [path, text] of [["/development", "验收 Bug"], ["/consulting", "验收交付物"], ["/calendar", "验收日历待办"], ["/diet", "验收晚餐"], ["/learning", "验收学习计划"]]) {
     await page.goto(path);
     await expect(page.getByText(text, { exact: false }).first()).toBeVisible();
   }

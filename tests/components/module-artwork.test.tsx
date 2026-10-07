@@ -7,15 +7,15 @@ describe("AI-generated module artwork", () => {
     const sources = Object.values(moduleArtworkSources);
     expect(sources).toHaveLength(9);
     expect(new Set(sources).size).toBe(9);
-    for (const source of sources) expect(source).toMatch(/^\/assets\/module-icons\/.+-v1\.webp$/);
+    for (const source of sources) expect(source).toMatch(/^\/assets\/module-icons\/.+-v1\.(webp|svg)$/);
   });
 
   it("is decorative beside visible text and can carry an accessible label when used alone", () => {
-    const { container, rerender } = render(<ModuleArtwork module="fitness" />);
+    const { container, rerender } = render(<ModuleArtwork module="calendar" />);
     const decorative = container.querySelector("img.module-artwork");
     expect(decorative).toHaveAttribute("alt", "");
     expect(decorative).toHaveAttribute("aria-hidden", "true");
-    expect(decorative).toHaveAttribute("src", moduleArtworkSources.fitness);
+    expect(decorative).toHaveAttribute("src", moduleArtworkSources.calendar);
 
     rerender(<ModuleArtwork module="settings" label="数据与设置" />);
     expect(screen.getByRole("img", { name: "数据与设置" })).toHaveAttribute("src", moduleArtworkSources.settings);

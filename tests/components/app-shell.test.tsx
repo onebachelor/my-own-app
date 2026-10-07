@@ -5,14 +5,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "../../src/App";
 import { useWorkspace, WorkspaceProvider } from "../../src/WorkspaceContext";
 
-const collections = ["planItems", "quickMemos", "mediaContents", "devProjects", "devMilestones", "devWorkItems", "devLogs", "clients", "consultingProjects", "consultingInteractions", "consultingDeliverables", "consultingFollowups", "consultingTimeEntries", "workoutTemplates", "workoutTemplateExercises", "workouts", "workoutExercises", "workoutSets", "bodyMetrics", "nutritionTargets", "foods", "meals", "mealItems", "entertainmentItems", "playSessions"];
+const collections = ["planItems", "quickMemos", "mediaContents", "devProjects", "devMilestones", "devWorkItems", "devLogs", "clients", "consultingProjects", "consultingInteractions", "consultingDeliverables", "consultingFollowups", "consultingTimeEntries", "nutritionTargets", "foods", "meals", "mealItems", "calendarEvents", "learningSubjects", "learningPlans", "learningSessions"];
 
 function mockApi(theme = "light", backupStatus: Record<string, any> | null = null, appearance?: unknown) {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
     let data: any = null;
     if (url.startsWith("/api/state")) data = { ...Object.fromEntries(collections.map((name) => [name, []])), settings: { theme, ...(appearance === undefined ? {} : { appearance }) }, trash: [] };
-    else if (url.startsWith("/api/dashboard")) data = { date: "2026-08-02", overview: { completed: 0, total: 0, progress: 0, scheduledMinutes: 0 }, timeline: [], unscheduled: [], attention: [], summaries: { media: [], development: [], consulting: [], fitness: [], diet: [], entertainment: [] } };
+    else if (url.startsWith("/api/dashboard")) data = { date: "2026-08-02", overview: { completed: 0, total: 0, progress: 0, scheduledMinutes: 0 }, timeline: [], unscheduled: [], attention: [], summaries: { media: [], development: [], consulting: [], diet: [], calendar: [], learning: [] } };
     else if (url.startsWith("/api/system/status")) data = { latestBackup: null, backupStatus };
     else if (url.startsWith("/api/system/save")) data = { savedAt: "2026-08-02T12:00:00.000Z", database: "ok", dataFile: "/tmp/app.sqlite" };
     return { ok: true, status: 200, json: async () => ({ data }) } as Response;
@@ -37,7 +37,7 @@ describe("application shell", () => {
   it("renders all nine requested navigation destinations", async () => {
     mockApi();
     const { container } = renderApp();
-    for (const label of ["首页总览", "今日计划", "自媒体", "开发工作", "咨询工作", "健身计划", "饮食计划", "游戏娱乐", "数据与设置"]) {
+    for (const label of ["首页总览", "今日计划", "自媒体", "开发工作", "咨询工作", "饮食计划", "日历", "学习", "数据与设置"]) {
       expect(await screen.findByRole("link", { name: label })).toBeInTheDocument();
     }
     expect(screen.getByRole("button", { name: /搜索所有内容/ })).toBeInTheDocument();

@@ -20,8 +20,8 @@ type WorkspaceContextValue = {
 const emptyState: WorkspaceState = {
   planItems: [], quickMemos: [], mediaContents: [], devProjects: [], devMilestones: [], devWorkItems: [], devLogs: [],
   clients: [], consultingProjects: [], consultingInteractions: [], consultingDeliverables: [], consultingFollowups: [], consultingTimeEntries: [],
-  workoutTemplates: [], workoutTemplateExercises: [], workouts: [], workoutExercises: [], workoutSets: [], bodyMetrics: [], nutritionTargets: [],
-  foods: [], meals: [], mealItems: [], entertainmentItems: [], playSessions: [], settings: {}, trash: [],
+  nutritionTargets: [],
+  foods: [], meals: [], mealItems: [], calendarEvents: [], learningSubjects: [], learningPlans: [], learningSessions: [], settings: {}, trash: [],
 };
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);

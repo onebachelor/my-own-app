@@ -83,5 +83,5 @@ export function TodayPage() {
   );
 }
 
-const sourceRoutes: Record<string, string> = { media: "/media", development: "/development", consulting: "/consulting", fitness: "/fitness", diet: "/diet", entertainment: "/entertainment" };
-const sourceLabels: Record<string, string> = { media: "自媒体", development: "开发工作", consulting: "咨询工作", fitness: "健身计划", diet: "饮食计划", entertainment: "游戏娱乐" };
+const sourceRoutes: Record<string, string> = { media: "/media", development: "/development", consulting: "/consulting", diet: "/diet", calendar: "/calendar", learning: "/learning" };
+const sourceLabels: Record<string, string> = { media: "自媒体", development: "开发工作", consulting: "咨询工作", diet: "饮食计划", calendar: "日历", learning: "学习" };

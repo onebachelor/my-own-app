@@ -6,9 +6,9 @@ export const moduleArtworkSources = {
   media: "/assets/module-icons/media-v1.webp",
   development: "/assets/module-icons/development-v1.webp",
   consulting: "/assets/module-icons/consulting-v1.webp",
-  fitness: "/assets/module-icons/fitness-v1.webp",
   diet: "/assets/module-icons/diet-v1.webp",
-  entertainment: "/assets/module-icons/entertainment-v1.webp",
+  calendar: "/assets/module-icons/calendar-v1.svg",
+  learning: "/assets/module-icons/learning-v1.svg",
   settings: "/assets/module-icons/settings-v1.webp",
 } as const;
 

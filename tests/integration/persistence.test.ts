@@ -66,7 +66,9 @@ describe("SQLite persistence and migrations", () => {
     try {
       const tables = manager.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table'").all() as Array<{ name: string }>;
       const names = tables.map((row) => row.name);
-      expect(names).toEqual(expect.arrayContaining(["plan_items", "media_contents", "dev_projects", "consulting_projects", "workouts", "meals", "entertainment_items", "trash_entries"]));
+      expect(names).toEqual(expect.arrayContaining(["plan_items", "media_contents", "dev_projects", "consulting_projects", "meals", "calendar_events", "learning_subjects", "learning_plans", "learning_sessions", "trash_entries"]));
+      expect(names).not.toContain("workouts");
+      expect(names).not.toContain("entertainment_items");
       const plan = manager.db.prepare("EXPLAIN QUERY PLAN SELECT * FROM plan_items WHERE plan_date = ? AND status = ? AND deleted_at IS NULL").all("2026-08-02", "todo") as Array<{ detail: string }>;
       expect(plan.some((row) => row.detail.includes("idx_plan_items_date_status"))).toBe(true);
     } finally {
@@ -74,7 +76,7 @@ describe("SQLite persistence and migrations", () => {
     }
   });
 
-  it("upgrades an existing database without losing workout data", () => {
+  it("upgrades an existing database by removing retired modules and adding calendar and learning tables", () => {
     directory = makeTestDirectory("upgrade");
     const oldMigrations = path.join(directory, "old-migrations");
     fs.mkdirSync(oldMigrations, { recursive: true });
@@ -89,24 +91,29 @@ describe("SQLite persistence and migrations", () => {
       oldManager.db.prepare(`
         INSERT INTO workout_templates(id, name, weekday, notes, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?)
-      `).run("existing-template", "原有训练模板", 1, "升级后不能丢失", "2026-08-01T08:00:00.000Z", "2026-08-01T08:00:00.000Z");
+      `).run("existing-template", "原有训练模板", 1, "升级后应被移除", "2026-08-01T08:00:00.000Z", "2026-08-01T08:00:00.000Z");
+      oldManager.db.prepare(`
+        INSERT INTO plan_items(id, title, plan_date, priority, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run("kept-plan", "应保留的计划", "2026-08-02", "medium", "2026-08-01T08:00:00.000Z", "2026-08-01T08:00:00.000Z");
     } finally {
       oldManager.close();
     }
 
     const upgradedManager = new DatabaseManager(paths);
     try {
-      const template = upgradedManager.db.prepare(
-        "SELECT name, notes, body_part FROM workout_templates WHERE id = ?",
-      ).get("existing-template") as { name: string; notes: string; body_part: string };
-      const workoutColumns = upgradedManager.db.pragma("table_info(workouts)") as Array<{ name: string }>;
+      const tables = upgradedManager.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table'").all() as Array<{ name: string }>;
+      const names = tables.map((row) => row.name);
+      expect(names).not.toContain("workout_templates");
+      expect(names).not.toContain("entertainment_items");
+      expect(names).toContain("calendar_events");
+      expect(names).toContain("learning_subjects");
+      const plan = upgradedManager.db.prepare("SELECT title FROM plan_items WHERE id = ?").get("kept-plan") as { title: string };
+      expect(plan.title).toBe("应保留的计划");
       const versions = upgradedManager.db.prepare(
         "SELECT version FROM schema_migrations ORDER BY version",
       ).all() as Array<{ version: string }>;
-
-      expect(template).toEqual({ name: "原有训练模板", notes: "升级后不能丢失", body_part: "" });
-      expect(workoutColumns.map((column) => column.name)).toContain("body_part");
-      expect(versions.at(-1)?.version).toBe("002_workout_body_part.sql");
+      expect(versions.at(-1)?.version).toBe("008_learning.sql");
     } finally {
       upgradedManager.close();
     }

@@ -233,9 +233,9 @@
 .app-shell[data-module="media"] { --module-tone: var(--palette-coral); }
 .app-shell[data-module="development"] { --module-tone: var(--palette-teal); }
 .app-shell[data-module="consulting"] { --module-tone: var(--palette-amber); }
-.app-shell[data-module="fitness"] { --module-tone: var(--palette-sage); }
 .app-shell[data-module="diet"] { --module-tone: var(--palette-apricot); }
-.app-shell[data-module="entertainment"] { --module-tone: var(--palette-indigo); }
+.app-shell[data-module="calendar"] { --module-tone: var(--palette-indigo); }
+.app-shell[data-module="learning"] { --module-tone: var(--palette-sage); }
 .app-shell[data-module="settings"] { --module-tone: var(--palette-graphite); }
 
 [data-tone="sky"] { --icon-tone: var(--palette-sky); }
@@ -1177,9 +1177,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px;
 .summary-tile[data-module="media"] { --tile-tone: var(--palette-coral); }
 .summary-tile[data-module="development"] { --tile-tone: var(--palette-teal); }
 .summary-tile[data-module="consulting"] { --tile-tone: var(--palette-amber); }
-.summary-tile[data-module="fitness"] { --tile-tone: var(--palette-sage); }
 .summary-tile[data-module="diet"] { --tile-tone: var(--palette-apricot); }
-.summary-tile[data-module="entertainment"] { --tile-tone: var(--palette-indigo); }
+.summary-tile[data-module="calendar"] { --tile-tone: var(--palette-indigo); }
+.summary-tile[data-module="learning"] { --tile-tone: var(--palette-sage); }
 .summary-top .module-artwork {
   width: 36px;
   height: 36px;
@@ -2012,3 +2012,71 @@ input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px;
   .game-grid, .history-table, .meal-columns { grid-template-columns: 1fr; }
   .consult-grid, .fitness-grid, .settings-grid { gap: 12px; }
 }
+
+/* --- 日历模块：待办事项行与已完成状态 -------------------------------- */
+
+.calendar-event-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding: 9px 0;
+}
+.calendar-event-row:first-child { border-top: 0; }
+.calendar-event-row .work-copy button { font-size: 12px; font-weight: 590; }
+.calendar-event-row.is-done .work-copy button,
+.calendar-event-row.is-done .work-copy small { text-decoration: line-through; opacity: .6; }
+.calendar-entry.calendar-entry-done { opacity: .55; }
+.calendar-entry.calendar-entry-done strong,
+.calendar-entry.calendar-entry-done span { text-decoration: line-through; }
+
+/* --- 学习模块：科目统计、学习计划卡片与进度控制 ----------------------- */
+
+.learning-stats {
+  display: flex;
+  gap: 22px;
+  margin-top: 10px;
+}
+.learning-stats span { display: grid; gap: 2px; }
+.learning-stats strong { font-size: 15px; font-weight: 640; }
+.learning-stats small { color: var(--text-soft); font-size: 10px; }
+
+.plan-list { display: grid; gap: 12px; }
+.plan-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-inset);
+  background: var(--surface-sheet);
+  padding: 13px 14px;
+}
+.plan-card.is-done { opacity: .62; }
+.plan-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.plan-card-head .plan-copy { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.plan-card-head .plan-copy strong { font-size: 13px; font-weight: 620; }
+.plan-actions { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.plan-card-content { color: var(--text-soft); font-size: 11.5px; line-height: 1.55; margin: 9px 0 8px; white-space: pre-wrap; }
+.plan-card-meta { display: flex; flex-wrap: wrap; gap: 14px; color: var(--text-soft); font-size: 11px; }
+.plan-card-meta span { display: inline-flex; align-items: center; gap: 5px; }
+
+.progress-block { margin-top: 10px; }
+.progress-block .progress-track { height: 7px; background: var(--surface-inset); border-radius: var(--radius-chip); overflow: hidden; }
+.progress-block .progress-track span { display: block; height: 100%; background: var(--accent); border-radius: var(--radius-chip); }
+.progress-step { display: flex; gap: 6px; margin-top: 8px; }
+.progress-step button {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-chip);
+  background: var(--surface-raised);
+  color: var(--text-soft);
+  font-size: 10.5px;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: background var(--motion-control) ease, color var(--motion-control) ease, border-color var(--motion-control) ease;
+}
+.progress-step button:hover { color: var(--text); border-color: var(--border-strong); }
+.progress-step button.active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+

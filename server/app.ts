@@ -121,10 +121,9 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     if (item.complete_source && item.source_entity_type && item.source_entity_id) {
       const collection = sourceCollectionByType[item.source_entity_type];
       if (collection) {
-        const statusField = collection === "workouts" ? "completed" : "done";
         const definition = collectionDefinitions[collection];
         if (definition.fields.includes("status" as never)) {
-          store.update(collection, item.source_entity_id, { status: statusField });
+          store.update(collection, item.source_entity_id, { status: "done" });
         }
       }
     }

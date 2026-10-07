@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Check, Clock, ArrowRight, NotePencil, CalendarBlank, Plus, Barbell, ListPlus, Bug, ForkKnife } from "@phosphor-icons/react";
+import { Check, Clock, ArrowRight, NotePencil, CalendarBlank, Plus, ListPlus, Bug, ForkKnife } from "@phosphor-icons/react";
 import { api } from "../api";
 import { useWorkspace } from "../WorkspaceContext";
 import { localDate, formatDuration, formatDate, classNames } from "../utils";
@@ -12,9 +12,9 @@ const summaryMeta: Record<string, { title: string; route: string; module: Module
   media: { title: "自媒体", route: "/media", module: "media", empty: "暂无待发布内容" },
   development: { title: "开发工作", route: "/development", module: "development", empty: "暂无高优先级问题" },
   consulting: { title: "咨询工作", route: "/consulting", module: "consulting", empty: "暂无待跟进事项" },
-  fitness: { title: "健身计划", route: "/fitness", module: "fitness", empty: "暂无近期训练" },
   diet: { title: "饮食计划", route: "/diet", module: "diet", empty: "今天还没有餐食记录" },
-  entertainment: { title: "游戏娱乐", route: "/entertainment", module: "entertainment", empty: "暂无正在进行的游戏" },
+  calendar: { title: "日历", route: "/calendar", module: "calendar", empty: "今天没有待办事项" },
+  learning: { title: "学习", route: "/learning", module: "learning", empty: "暂无进行中的学习计划" },
 };
 
 export function DashboardPage() {
@@ -74,7 +74,7 @@ export function DashboardPage() {
         <button onClick={() => navigate("/today?new=1")}><ListPlus size={17} />新建计划</button>
         <button onClick={() => memoInput.current?.focus()}><NotePencil size={17} />记录备忘</button>
         <button onClick={() => navigate("/development?new=work-item")}><Bug size={17} />添加工作项</button>
-        <button onClick={() => navigate("/fitness?new=workout")}><Barbell size={17} />记录训练</button>
+        <button onClick={() => navigate("/calendar")}><CalendarBlank size={17} />添加日历待办</button>
         <button onClick={() => navigate("/diet?new=meal")}><ForkKnife size={17} />记录饮食</button>
       </nav>
       <div className="dashboard-grid">
@@ -106,7 +106,7 @@ export function DashboardPage() {
   );
 }
 
-const sourceRoutes: Record<string, string> = { media: "/media", development: "/development", consulting: "/consulting", fitness: "/fitness", diet: "/diet", entertainment: "/entertainment" };
+const sourceRoutes: Record<string, string> = { media: "/media", development: "/development", consulting: "/consulting", diet: "/diet", calendar: "/calendar", learning: "/learning" };
 
 function PlanRow({ item, onComplete, onOpenSource }: { item: Record<string, any>; onComplete: () => Promise<any>; onOpenSource?: () => void }) {
   const done = item.status === "done";

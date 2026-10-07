@@ -5,12 +5,13 @@ import { IconButton } from "./ui";
 
 const weekdays = ["一", "二", "三", "四", "五", "六", "日"];
 
-export function MonthCalendar({ month, selectedDate, onMonthChange, onSelectDate, renderDay }: {
+export function MonthCalendar({ month, selectedDate, onMonthChange, onSelectDate, renderDay, onDoubleClickDay }: {
   month: string;
   selectedDate?: string;
   onMonthChange: (month: string) => void;
   onSelectDate: (date: string) => void;
   renderDay: (date: string) => ReactNode;
+  onDoubleClickDay?: (date: string) => void;
 }) {
   const days = buildMonthDays(month);
   const today = localDate();
@@ -22,7 +23,7 @@ export function MonthCalendar({ month, selectedDate, onMonthChange, onSelectDate
       </header>
       <div className="month-calendar-scroll">
         <div className="month-calendar-weekdays">{weekdays.map((weekday) => <span key={weekday}>周{weekday}</span>)}</div>
-        <div className="month-calendar-grid">{days.map((day) => <button type="button" key={day.date} data-date={day.date} className={classNames("month-calendar-day", !day.inMonth && "outside", day.date === today && "today", day.date === selectedDate && "selected")} onClick={() => onSelectDate(day.date)}><span className="calendar-day-number">{Number(day.date.slice(-2))}</span><div className="calendar-day-content">{renderDay(day.date)}</div></button>)}</div>
+        <div className="month-calendar-grid">{days.map((day) => <button type="button" key={day.date} data-date={day.date} className={classNames("month-calendar-day", !day.inMonth && "outside", day.date === today && "today", day.date === selectedDate && "selected")} onClick={() => onSelectDate(day.date)} onDoubleClick={onDoubleClickDay ? () => onDoubleClickDay(day.date) : undefined}><span className="calendar-day-number">{Number(day.date.slice(-2))}</span><div className="calendar-day-content">{renderDay(day.date)}</div></button>)}</div>
       </div>
     </div>
   );

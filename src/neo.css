@@ -139,9 +139,9 @@
 .neo-shell[data-module="media"] { --mix-a: var(--neo-rose); --mix-b: var(--neo-sun); --mix-c: var(--neo-teal); --mix-d: var(--neo-blue); --mix-e: var(--neo-orange); }
 .neo-shell[data-module="development"] { --mix-a: var(--neo-teal); --mix-b: var(--neo-coral); --mix-c: var(--neo-blue); --mix-d: var(--neo-sun); --mix-e: var(--neo-leaf); }
 .neo-shell[data-module="consulting"] { --mix-a: var(--neo-ochre); --mix-b: var(--neo-rose); --mix-c: var(--neo-teal); --mix-d: var(--neo-orange); --mix-e: var(--neo-blue); }
-.neo-shell[data-module="fitness"] { --mix-a: var(--neo-leaf); --mix-b: var(--neo-orange); --mix-c: var(--neo-blue); --mix-d: var(--neo-sun); --mix-e: var(--neo-rose); }
 .neo-shell[data-module="diet"] { --mix-a: var(--neo-orange); --mix-b: var(--neo-leaf); --mix-c: var(--neo-sun); --mix-d: var(--neo-rose); --mix-e: var(--neo-teal); }
-.neo-shell[data-module="entertainment"] { --mix-a: var(--neo-blue); --mix-b: var(--neo-coral); --mix-c: var(--neo-sun); --mix-d: var(--neo-teal); --mix-e: var(--neo-rose); }
+.neo-shell[data-module="calendar"] { --mix-a: var(--neo-blue); --mix-b: var(--neo-coral); --mix-c: var(--neo-sun); --mix-d: var(--neo-teal); --mix-e: var(--neo-rose); }
+.neo-shell[data-module="learning"] { --mix-a: var(--neo-leaf); --mix-b: var(--neo-orange); --mix-c: var(--neo-blue); --mix-d: var(--neo-sun); --mix-e: var(--neo-rose); }
 .neo-shell[data-module="settings"] { --mix-a: var(--neo-stone); --mix-b: var(--neo-teal); --mix-c: var(--neo-coral); --mix-d: var(--neo-blue); --mix-e: var(--neo-sun); }
 
 .neo-shell[data-module] {
@@ -304,18 +304,18 @@
 .neo-shell .neo-nav-emblem[data-module="media"] { --nav-emblem-x: 100%; --nav-emblem-y: 0%; }
 .neo-shell .neo-nav-emblem[data-module="development"] { --nav-emblem-x: 0%; --nav-emblem-y: 50%; }
 .neo-shell .neo-nav-emblem[data-module="consulting"] { --nav-emblem-x: 50%; --nav-emblem-y: 50%; }
-.neo-shell .neo-nav-emblem[data-module="fitness"] { --nav-emblem-x: 100%; --nav-emblem-y: 50%; }
+.neo-shell .neo-nav-emblem[data-module="learning"] { --nav-emblem-x: 100%; --nav-emblem-y: 50%; }
 .neo-shell .neo-nav-emblem[data-module="diet"] { --nav-emblem-x: 0%; --nav-emblem-y: 100%; }
-.neo-shell .neo-nav-emblem[data-module="entertainment"] { --nav-emblem-x: 50%; --nav-emblem-y: 100%; }
+.neo-shell .neo-nav-emblem[data-module="calendar"] { --nav-emblem-x: 50%; --nav-emblem-y: 100%; }
 .neo-shell .neo-nav-emblem[data-module="settings"] { --nav-emblem-x: 100%; --nav-emblem-y: 100%; }
 .neo-shell .nav-link[href="/"] { --link-accent: var(--neo-coral); }
 .neo-shell .nav-link[href="/today"] { --link-accent: var(--neo-sun); }
 .neo-shell .nav-link[href="/media"] { --link-accent: var(--neo-rose); }
 .neo-shell .nav-link[href="/development"] { --link-accent: var(--neo-teal); }
 .neo-shell .nav-link[href="/consulting"] { --link-accent: var(--neo-ochre); }
-.neo-shell .nav-link[href="/fitness"] { --link-accent: var(--neo-leaf); }
 .neo-shell .nav-link[href="/diet"] { --link-accent: var(--neo-orange); }
-.neo-shell .nav-link[href="/entertainment"] { --link-accent: var(--neo-blue); }
+.neo-shell .nav-link[href="/calendar"] { --link-accent: var(--neo-blue); }
+.neo-shell .nav-link[href="/learning"] { --link-accent: var(--neo-leaf); }
 .neo-shell .nav-link[href="/settings"] { --link-accent: var(--neo-stone); }
 .neo-shell .nav-link:hover {
   border-color: var(--neo-ink);
@@ -467,9 +467,9 @@
 .neo-shell[data-module="media"] { --module-stamp: "02 / MEDIA"; --emblem-x: 100%; --emblem-y: 0%; }
 .neo-shell[data-module="development"] { --module-stamp: "03 / BUILD"; --emblem-x: 0%; --emblem-y: 50%; }
 .neo-shell[data-module="consulting"] { --module-stamp: "04 / CLIENT"; --emblem-x: 50%; --emblem-y: 50%; }
-.neo-shell[data-module="fitness"] { --module-stamp: "05 / TRAIN"; --emblem-x: 100%; --emblem-y: 50%; }
-.neo-shell[data-module="diet"] { --module-stamp: "06 / FUEL"; --emblem-x: 0%; --emblem-y: 100%; }
-.neo-shell[data-module="entertainment"] { --module-stamp: "07 / PLAY"; --emblem-x: 50%; --emblem-y: 100%; }
+.neo-shell[data-module="diet"] { --module-stamp: "05 / FUEL"; --emblem-x: 0%; --emblem-y: 100%; }
+.neo-shell[data-module="calendar"] { --module-stamp: "06 / CALENDAR"; --emblem-x: 50%; --emblem-y: 100%; }
+.neo-shell[data-module="learning"] { --module-stamp: "07 / LEARN"; --emblem-x: 100%; --emblem-y: 50%; }
 .neo-shell[data-module="settings"] { --module-stamp: "08 / SYSTEM"; --emblem-x: 100%; --emblem-y: 100%; }
 .neo-shell .page-header > div:first-child { display: block; min-width: 0; }
 .neo-shell .page-heading-copy { display: block; min-width: 0; }

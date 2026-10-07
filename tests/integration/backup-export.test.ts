@@ -70,7 +70,7 @@ describe("production backup, restore and export", () => {
     const { manager, store, backups } = setup("export");
     try {
       store.create("mediaContents", { title: "导出内容", stage: "idea" });
-      store.create("entertainmentItems", { name: "导出游戏", status: "playing" });
+      store.create("calendarEvents", { title: "导出日历待办", event_date: "2026-08-02", status: "todo" });
       const result = await backups.exportAll();
       const zip = await JSZip.loadAsync(fs.readFileSync(result.path));
       expect(zip.file("manifest.json")).not.toBeNull();
@@ -78,7 +78,7 @@ describe("production backup, restore and export", () => {
       expect(zip.file("csv/mediaContents.csv")).not.toBeNull();
       const allData = JSON.parse(await zip.file("all-data.json")!.async("string"));
       expect(allData.mediaContents[0].title).toBe("导出内容");
-      expect(allData.entertainmentItems[0].name).toBe("导出游戏");
+      expect(allData.calendarEvents[0].title).toBe("导出日历待办");
     } finally {
       manager.close();
     }
